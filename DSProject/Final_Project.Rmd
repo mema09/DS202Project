@@ -19,8 +19,12 @@ tuition = read.csv("tuition_cost.csv", header = T)
 ```
 
 ```{r}
-# Cleaning each dataset
+# Cleaning each dataset that has unused values 
 cleanedCost = subset(cost, select = -c(X,Rank))
+cleanedMin = subset(min, select = -c(X))
+cleanedTuition = subset(tuition, select = -c(X))
+combine = merge(cleanedCost, cleanedMin)
+allCombined = merge(combine, cleanedTuition)
 
 ```
 
