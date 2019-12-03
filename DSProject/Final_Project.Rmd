@@ -1,0 +1,26 @@
+---
+title: "Final Project"
+author: "Omima Hassan, Maureen McDonald, Hannah Lo, Yuma Anderson"
+date: "12/02/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+# Reading in the datasets 
+cost = read.csv("cost_liv.csv", header = T)
+min = read.csv("min_wage.csv", header = T)
+tuition = read.csv("tuition_cost.csv", header = T)
+
+```
+
+```{r}
+# Cleaning each dataset
+cleanedCost = subset(cost, select = -c(X,Rank))
+
+```
+
