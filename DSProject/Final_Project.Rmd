@@ -9,25 +9,36 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Background
 
+The first dataset was from the Digest of Education Statistics. It contained the average tuition and fees along with board rates for each type of university in the United States by the year for 1969-1964 and 2017-2018.
+
+The second dataset was from the U.S. Department of Labor. It contained the minimum wage for each state from the years 1969-2018.
+
+The third data set was from Numbeo. It contained the average cost of living index for each state in the United States in 2018.
+
+Each of the data sets were loaded and set to "cost", "min", and "tuition".
 ```{r}
-# Reading in the datasets 
 cost = read.csv("cost_liv.csv", header = T)
 min = read.csv("min_wage.csv", header = T)
 tuition = read.csv("tuition_cost.csv", header = T)
-
 ```
 
+## Data Cleaning
+Initial exploration revealed that some data processing was needed before we could proceed with further visualization. All unused values were deleted:
 ```{r}
-# Cleaning each dataset that has unused values 
 cleanedCost = subset(cost, select = -c(X,Rank))
 cleanedMin = subset(min, select = -c(X))
 cleanedTuition = subset(tuition, select = -c(X))
+```
+
+The data sets were merged together to form one data set:
+```{r}
 combine = merge(cleanedCost, cleanedMin)
 allCombined = merge(combine, cleanedTuition)
 ```
 
-
+All missing or empty values were encoded with "NA":
 ```{r, warning=FALSE}
 # Changing all columns that have empty values into NA values, then removing the NA's
 X1968= which(allCombined$X1968..a. == "...")
