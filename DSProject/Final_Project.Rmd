@@ -25,6 +25,110 @@ cleanedMin = subset(min, select = -c(X))
 cleanedTuition = subset(tuition, select = -c(X))
 combine = merge(cleanedCost, cleanedMin)
 allCombined = merge(combine, cleanedTuition)
+```
 
+
+```{r, warning=FALSE}
+# Changing all columns that have empty values into NA values, then removing the NA's
+X1968= which(allCombined$X1968..a. == "...")
+allCombined$X1968..a.[X1968]= "NA"
+
+X1970= which(allCombined$X1970..a. == "...")
+allCombined$X1970..a.[X1970]= "NA"
+
+X1972= which(allCombined$X1972 == "...")
+allCombined$X1972[X1972] = "NA"
+
+X1976= which(allCombined$X1976..a. == "...")
+allCombined$X1976..a.[X1976]= "NA"
+
+X1979= which(allCombined$X1979 == "...")
+allCombined$X1979[X1979] = "NA"
+
+X1980= which(allCombined$X1980 == "...")
+allCombined$X1980[X1980] = "NA"
+
+X1981= which(allCombined$X1981 == "...")
+allCombined$X1981[X1981] = "NA"
+
+X1988= which(allCombined$X1988 == "...")
+allCombined$X1988[X1988] = "NA"
+
+X1991= which(allCombined$X1991 == "...")
+allCombined$X1991[X1991] = "NA"
+
+X1992= which(allCombined$X1992 == "...")
+allCombined$X1991[X1992] = "NA"
+
+X1994= which(allCombined$X1994 == "...")
+allCombined$X1994[X1994] = "NA"
+
+X1996= which(allCombined$X1996 == "...")
+allCombined$X1996[X1996] = "NA"
+
+X1997= which(allCombined$X1997 == "...")
+allCombined$X1997[X1997] = "NA"
+
+X1998= which(allCombined$X1998 == "...")
+allCombined$X1998[X1998] = "NA"
+
+X2000= which(allCombined$X2000 == "...")
+allCombined$X2000[X2000] = "NA"
+
+X2001= which(allCombined$X2001 == "...")
+allCombined$X2001[X2001] = "NA"
+
+X2002= which(allCombined$X2002 == "...")
+allCombined$X2002[X2002] = "NA"
+
+X2003= which(allCombined$X2003 == "...")
+allCombined$X2003[X2003] = "NA"
+
+X2004= which(allCombined$X2004 == "...")
+allCombined$X2004[X2004] = "NA"
+
+X2005= which(allCombined$X2005 == "...")
+allCombined$X2005[X2005] = "NA"
+
+X2006= which(allCombined$X2006 == "...")
+allCombined$X2006[X2006] = "NA"
+
+X2007= which(allCombined$X2007 == "...")
+allCombined$X2007[X2007] = "NA"
+
+X2008= which(allCombined$X2008 == "...")
+allCombined$X2008[X2008] = "NA"
+
+X2009= which(allCombined$X2009 == "...")
+allCombined$X2009[X2009] = "NA"
+
+X2010= which(allCombined$X2010 == "...")
+allCombined$X2010[X2010] = "NA"
+
+X2011= which(allCombined$X2011 == "...")
+allCombined$X2011[X2011] = "NA"
+
+X2012= which(allCombined$X2012 == "...")
+allCombined$X2010[X2012] = "NA"
+
+X2013= which(allCombined$X2013 == "...")
+allCombined$X2013[X2013] = "NA"
+
+X2014= which(allCombined$X2014 == "...")
+allCombined$X2014[X2014] = "NA"
+
+X2015= which(allCombined$X2015 == "...")
+allCombined$X2015[X2015] = "NA"
+
+X2016= which(allCombined$X2016 == "...")
+allCombined$X2016[X2016] = "NA"
+
+X2017= which(allCombined$X2017 == "...")
+allCombined$X2017[X2017] = "NA"
+
+X2018= which(allCombined$X2018 == "...")
+allCombined$X2018[X2018] = "NA"
+
+allCombined = na.omit(allCombined)
 ```
 
