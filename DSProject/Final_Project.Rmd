@@ -7,6 +7,8 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyr)
+library(tidyverse)
 ```
 
 ## Background
@@ -88,6 +90,26 @@ min$X2017[X2017]="NA"
 X2018 = which(min$X2018 == "...")
 min$X2018[X2018]="NA"
 
+X2000= allCombined$X2000=as.numeric(allCombined$X2000)
+X2001= allCombined$X2001=as.numeric(allCombined$X2001)
+X2002= allCombined$X2002=as.numeric(allCombined$X2002)
+X2003= allCombined$X2003=as.numeric(allCombined$X2003)
+X2004= allCombined$X2004=as.numeric(allCombined$X2004)
+X2005= allCombined$X2005=as.numeric(allCombined$X2005)
+X2006= allCombined$X2006=as.numeric(allCombined$X2006)
+X2007= allCombined$X2007=as.numeric(allCombined$X2007)
+X2008= allCombined$X2008=as.numeric(allCombined$X2008)
+X2009= allCombined$X2009=as.numeric(allCombined$X2009)
+X2010= allCombined$X2010=as.numeric(allCombined$X2010)
+X2011= allCombined$X2011=as.numeric(allCombined$X2011)
+X2012= allCombined$X2012=as.numeric(allCombined$X2012)
+X2013= allCombined$X2013=as.numeric(allCombined$X2013)
+X2014= allCombined$X2014=as.numeric(allCombined$X2014)
+X2015= allCombined$X2015=as.numeric(allCombined$X2015)
+X2016= allCombined$X2016=as.numeric(allCombined$X2016)
+X2017= allCombined$X2017=as.numeric(allCombined$X2017)
+X2018= allCombined$X2018=as.numeric(allCombined$X2018)
+
 cleanedMin = na.omit(min)
 ```
 
@@ -97,3 +119,31 @@ combine = merge(cleanedMin, cost)
 allCombined = merge(combine, tuition)
 ```
 
+What state had the highest minimum wage?
+Create a histogram of state to showing the relationship between state and minimum wage
+```{r}
+allCombined %>% 
+  ggplot(aes(State.or.other........jurisdiction, X2018))+ 
+  geom_point()+ labs(title = "States' Minimum Wage in 2018", x= "State", y="Minimum Wage for 2018")+ 
+  theme(axis.text.x = element_text(angle = 90, size = 5))
+```
+
+Has the average tuition or average minimum wage been increasing the fastest?
+Create a scatterplot showing a linear model of year vs cost for both tuition and wage. Compare slopes.
+```{r}
+tuition %>% 
+  ggplot(aes(Year.and.control.of.institution, Total.tuition..fees..room..and.board))+ 
+  geom_point()+
+  labs(title = "Tuition by Year", x= "Year", y="Total Tuition (USD)")
+fit1 <- lm(Year.and.control.of.institution ~ Total.tuition..fees..room..and.board, data = tuition)
+summary(fit1)
+```
+
+
+
+
+
+
+Sources:
+https://datascience.stackexchange.com/questions/15589/remove-part-of-string-in-r
+https://sejohnston.com/2012/08/09/a-quick-and-easy-function-to-plot-lm-results-in-r/ 
