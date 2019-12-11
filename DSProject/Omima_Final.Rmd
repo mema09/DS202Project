@@ -1,0 +1,140 @@
+---
+title: "Project"
+author: "Omima Hassan"
+date: "12/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+cost = read.csv("costliv_cleaned.csv")
+cost = subset(cost, select = - c(X, city))
+tuition = read.csv("tuitioncost_current.csv")
+tuition = subset(tuition, select = -c(Dormitory.rooms, Board3, dorms.total))
+min = read.csv("min_wage_clean.csv")
+min = subset(min, select = c(X2013, X2014, X2015, X2016, X2017, X2018))
+
+tuition = tuition %>% 
+  rename(Year =  ï..Year.and.control.of.institution)
+```
+
+
+Changing tuition to numerics instead of factors so that it's more feasible to use
+```{r}
+tuition$tuition2=vector("numeric", length = 1)
+tuition$tuition2=(c('12349','12922','13639','14439','15505','16510','17451','18473','19364','20361','21126','22074','23011','23871','24701','25409','26132','26592','27357'))
+tuition$tuition2=as.numeric(tuition$tuition2)
+
+tuition$tuition3= vector("numeric", length=1)
+tuition$tuition3= (c('7040', '7372', '7786', '8309', '9029', '9706', '10279', '10931', '11455', '12046', '12404', '12945', '13572', '14099', '14563', '14957', '15343', '15512', '15924'))
+tuition$tuition3 = as.numeric(tuition$tuition3)
+```
+
+
+
+Narrowing results of states to only a few, each state is from one of the four regions.
+A visual representation to how much tuition costs have risen since 1999 compared to 2018. All these values are out of state tuition rates. 
+
+An animated plot showing the rise in tuition prices per academic year
+```{r}
+tuition = tuition %>% rename(Out_Of_State_Tuition = Total.tuition..fees..room..and.board)
+library(plotly)
+x = tuition$Year
+y = tuition$Out_Of_State_Tuition
+
+p <- tuition %>%
+  plot_ly(
+    x = ~Year,
+    y = ~Out_Of_State_Tuition,
+    frame = ~y,
+    type = 'scatter',
+    mode = 'markers',
+    showlegend = F
+    
+    ) 
+p
+chart_link = api_create(p, filename="tuition_interactive1")
+chart_link
+
+```
+
+
+After finding the trend in values for in state and out of state tuition, We wanted to see if a prediction model could predict a new value for out of state tuition based on a given value for in state tuition.
+* Using the model, we predict the out of state tuition of of an academic year based on an input in state tuition
+* Since the linear model is very simple, the easiest way to predict is to use the parameter estimates from the model
+```{r}
+require(graphics)
+
+t1 = tuition$tuition2
+t2 = tuition$tuition3
+
+
+tuitionlm = lm(tuition2~tuition3, data=tuition)
+summary(tuitionlm)
+
+
+instate = 25300
+
+outofstate = as.numeric((tuitionlm$coefficients["tuition3"] * instate) + tuitionlm$coefficients[1])
+
+outofstate
+```
+
+
+
+```{r}
+c1 <- cost
+t1 <- tuition
+min1 = min
+dta = qpcR:::cbind.na(c1, t1)
+dta = na.omit(dta)
+
+dta1 = qpcR:::cbind.na(dta, min1)
+dta1 = na.omit(dta1)
+```
+
+
+Is cost of living lower or higher for an out of state student?
+Create a scatter plot showing the relationship between out of state tution and the cost of living index
+
+Showing the cost of living out of state compared to tuition, a relationship can be seen from the plot. As cost of living is greater out of state tuition prices are lower, as tuition increases cost of living as a out of state student decreases.
+```{r}
+ggplot(dta, aes(x = tuition2, y = Cost.of.Living.Index)) + geom_point(stat= "identity") + labs(title = "Cost of living by Out of State Tuition", x = "Out of State Tuition", y = "Cost of Living Index")  + theme(axis.text.x = element_text(angle=90, size = 7))
+```
+
+What is the relationship between minimum wage and tuiton rates in each state in the year 2018?
+Create a scatter plot visualizing minimum wage 
+
+```{r}
+a = ggplot(dta1, aes(x = state,y = tuition2)) 
+a + facet_wrap(~X2018) +  geom_point() + theme(axis.text.x = element_text(angle=90, size = 7)) + labs(title = "Minimum wage by State compared with Out of State Tuition", x = "State", y = "Out of State Tuition")
+```
+
+Finding if a correlation exists between minimum wage and tuition rates for both in state and out of state students for the year 2018
+Because both variables result in a negative correlation it can be said that an inverse relationship exists between tuition and minimum wage, as one value increases the other decreases and vice versa
+```{r}
+# Out of state and minimum wage
+cor(dta1$tuition2, dta1$X2018)
+
+# In state and minimum wage
+cor(dta1$tuition3, dta1$X2018)
+```
+
+
+
+
+
+
+
+
+
+Sources:
+https://www.datanovia.com/en/blog/ggplot-axis-ticks-set-and-rotate-text-labels/
+https://towardsdatascience.com/create-animated-bar-charts-using-r-31d09e5841da
+https://www.datanovia.com/en/lessons/rename-data-frame-columns-in-r/
+https://plot.ly/r/animations/
+https://stackoverflow.com/questions/3699405/how-to-cbind-or-rbind-different-lengths-vectors-without-repeating-the-elements-o
+https://stats.stackexchange.com/questions/188042/how-to-predict-a-value-using-r
